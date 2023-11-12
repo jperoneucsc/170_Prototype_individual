@@ -74,9 +74,9 @@ let animationCounter = 0;
 function update() {
   // The init function running at startup
   if (!ticks) {
-    raindrops = times(6, () => {
+    raindrops = times(8, () => {
       const posX = rnd(0, G.WIDTH);
-      const posY = rnd(0, G.HEIGHT);
+      const posY = rnd(0, 30);
       return {
         pos: vec(posX, posY),
         speed: rnd(G.raindrops_SPEED_MIN, G.raindrops_SPEED_MAX),
@@ -125,8 +125,19 @@ function update() {
   // Update for raindrop
   raindrops.forEach((r) => {
     r.pos.y += r.speed;
-    r.pos.wrap(0, G.WIDTH, 0, G.HEIGHT);
     color("blue");
     box(r.pos, 1.3);
+    r.pos.wrap(0, G.WIDTH, -5, G.HEIGHT);
+
+    // Randomize raindrop positions after wrapping
+    if (r.pos.y <= 0){
+      r.pos.x = rnd(0, G.WIDTH);
+    }
+
+    const IsCollidingWithRain = box(r.pos, 1.3).isColliding.char.a;
+
+    if (IsCollidingWithRain){
+      end();
+    }
   });
 }
