@@ -70,6 +70,9 @@ let playerFrameIndex = 0;
 // Counter for animation delay
 let animationCounter = 0;
 
+// Counter for timer
+let timer;
+
 // The game loop function
 function update() {
   // The init function running at startup
@@ -87,6 +90,9 @@ function update() {
       pos: vec(G.WIDTH * 0.5, 94),
       frameIndex: 0,
     };
+
+    score = 0;
+    timer = 0;
   } // end of if !ticks
 
   // Draw rectangles for border
@@ -122,6 +128,12 @@ function update() {
     char("b", player.pos);
   }
 
+  timer += 1 / 60;
+  // Check if the timer has reached 30 seconds
+  if (timer >= 30) {
+    end();
+  }
+
   // Update for raindrop
   raindrops.forEach((r) => {
     r.pos.y += r.speed;
@@ -134,10 +146,23 @@ function update() {
       r.pos.x = rnd(0, G.WIDTH);
     }
 
+    // Check if a raindrop has touched the ground
+    if (r.pos.y >= G.HEIGHT - 3) {
+      // Increase the score
+      score++;
+      // Reset the raindrop position
+      r.pos.y = rnd(0, 30);
+      r.pos.x = rnd(0, G.WIDTH);
+    }
+    
     const IsCollidingWithRain = box(r.pos, 1.3).isColliding.char.a;
 
     if (IsCollidingWithRain){
       end();
     }
   });
+
+  // Display the timer
+  color("black");
+  text(`Time ${Math.ceil(30 - timer)}`, G.WIDTH - 42, 10);
 }
