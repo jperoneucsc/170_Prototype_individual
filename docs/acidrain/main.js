@@ -60,6 +60,12 @@ let player;
  */
 let raindrops;
 
+/**
+ * @type { {pos: Vector, radius: number }[]}
+ */
+let clouds;
+
+
 // Direction variable for the player
 let playerDirection = 1; // 1 for right, -1 for left
 
@@ -84,7 +90,27 @@ function update() {
         pos: vec(posX, posY),
         speed: rnd(G.raindrops_SPEED_MIN, G.raindrops_SPEED_MAX),
       };
+      clouds = times(30, () => {
+        const posX = rnd(0, 200);
+        const posY = rnd(5, 15);
+  
+        return {
+          pos: vec(posX, posY),
+          radius: rnd(5, 10),
+        };
+      });
     });
+    
+    clouds = times(30, () => {
+      const posX = rnd(0, 200);
+      const posY = rnd(5, 15);
+
+      return {
+        pos: vec(posX, posY),
+        radius: rnd(5, 10),
+      };
+    });
+    
 
     player = {
       pos: vec(G.WIDTH * 0.5, 94),
@@ -162,6 +188,11 @@ function update() {
     }
   });
 
+  //Display clouds
+  color("light_black");
+  clouds.forEach((c) => {
+    box(c.pos, c.radius * 2, c.radius * 2);
+  });
   // Display the timer
   color("black");
   text(`Time ${Math.ceil(30 - timer)}`, G.WIDTH - 42, 10);
