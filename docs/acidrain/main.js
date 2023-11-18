@@ -34,6 +34,8 @@ const G = {
 
 options = {
   viewSize: { x: G.WIDTH, y: G.HEIGHT },
+  isPlayingBgm: true,
+  isReplayEnabled: true,
 };
 
 /**
