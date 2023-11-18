@@ -184,6 +184,7 @@ function update() {
     const IsCollidingWithRain = box(r.pos, 1.3).isColliding.char.a;
 
     if (IsCollidingWithRain){
+      play("hit");
       end();
     }
   });
